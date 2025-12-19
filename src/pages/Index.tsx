@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/HeroSection";
+import { GallerySection } from "@/components/GallerySection";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 
@@ -6,6 +7,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
+
+      <GallerySection />
       
       <section className="py-16 relative">
         <div className="container">

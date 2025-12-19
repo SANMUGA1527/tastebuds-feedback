@@ -1,5 +1,7 @@
 import { HeroSection } from "@/components/HeroSection";
 import { GallerySection } from "@/components/GallerySection";
+import { AboutSection } from "@/components/AboutSection";
+import { ContactSection } from "@/components/ContactSection";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 
@@ -9,6 +11,10 @@ const Index = () => {
       <HeroSection />
 
       <GallerySection />
+
+      <AboutSection />
+
+      <ContactSection />
       
       <section className="py-16 relative">
         <div className="container">

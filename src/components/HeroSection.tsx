@@ -1,16 +1,10 @@
 import { Utensils } from "lucide-react";
 import heroImage from "@/assets/hero-restaurant.jpg";
-
 export const HeroSection = () => {
-  return (
-    <section className="relative min-h-[70vh] md:min-h-[80vh] overflow-hidden">
+  return <section className="relative min-h-[70vh] md:min-h-[80vh] overflow-hidden">
       {/* Hero background image */}
       <div className="absolute inset-0">
-        <img 
-          src={heroImage} 
-          alt="Elegant restaurant interior with golden chandeliers" 
-          className="w-full h-full object-cover"
-        />
+        <img src={heroImage} alt="Elegant restaurant interior with golden chandeliers" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
       </div>
 
@@ -28,9 +22,9 @@ export const HeroSection = () => {
           </div>
 
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold animate-fade-in-up stagger-1 opacity-0">
-            <span className="text-foreground drop-shadow-lg">La Maison</span>
+            <span className="text-foreground drop-shadow-lg">Hotel Sri Senthoor</span>
             <br />
-            <span className="text-gradient-gold">Gourmande</span>
+            <span className="text-gradient-gold">and Cafe 77</span>
           </h1>
 
           <p className="max-w-2xl text-lg md:text-xl text-foreground/90 animate-fade-in-up stagger-2 opacity-0 drop-shadow-md">
@@ -45,6 +39,5 @@ export const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };

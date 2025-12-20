@@ -1,6 +1,6 @@
 import { Clock } from "lucide-react";
 const hours = [{
-  day: "Monday - Thursday",
+  day: "Sunday - Saturday",
   time: "5:00 PM - 10:00 PM"
 }, {
   day: "Friday - Saturday",

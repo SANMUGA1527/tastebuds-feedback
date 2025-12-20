@@ -4,10 +4,8 @@ import { AboutSection } from "@/components/AboutSection";
 import { ContactSection } from "@/components/ContactSection";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <HeroSection />
 
       <GallerySection />
@@ -31,12 +29,10 @@ const Index = () => {
       <footer className="py-8 border-t border-border/50">
         <div className="container text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 La Maison Gourmande. All rights reserved.
+            © 2025 Hotel Sri Senthoor & Cafe 77. All rights reserved.
           </p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;

@@ -18,9 +18,12 @@ export const ContactSection = () => {
             </div>
             <h3 className="font-serif text-lg font-semibold mb-2">Location</h3>
             <p className="text-muted-foreground text-sm">
-              123 Gourmet Avenue<br />
-              Downtown District<br />
-              New York, NY 10001
+              Hotel Sri Senthoor & Cafe 77,
+Near Toll Plaza,
+Nagampatti,<br />
+              Krishnagiri District,<br />
+              Tamil Nadu – 635203
+
             </p>
           </div>
 
@@ -30,7 +33,7 @@ export const ContactSection = () => {
             </div>
             <h3 className="font-serif text-lg font-semibold mb-2">Reservations</h3>
             <p className="text-muted-foreground text-sm mb-2">
-              Call us to book a table
+              Call us for any Enquiry       
             </p>
             <a href="tel:+12125551234" className="text-primary hover:underline">
               +91 7010695808  
@@ -45,8 +48,8 @@ export const ContactSection = () => {
             <p className="text-muted-foreground text-sm mb-2">
               For inquiries & events
             </p>
-            <a href="mailto:info@lamaisongourmande.com" className="text-primary hover:underline text-sm">
-              info@lamaisongourmande.com
+            <a className="text-primary hover:underline text-sm" href="mailto:hotelsrisenthoor77@gmail.com">
+              hotelsrisenthoor77@gmail.com
             </a>
           </div>
         </div>

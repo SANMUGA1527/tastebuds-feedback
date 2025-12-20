@@ -32,11 +32,7 @@ export const HeroSection = () => {
             experience and help us continue our tradition of excellence.
           </p>
 
-          <div className="flex items-center gap-2 text-sm text-foreground/80 animate-fade-in-up stagger-3 opacity-0">
-            <div className="w-12 h-px bg-primary/50" />
-            <span className="drop-shadow-md">Est. 1985</span>
-            <div className="w-12 h-px bg-primary/50" />
-          </div>
+          
         </div>
       </div>
     </section>;

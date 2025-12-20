@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { StarRating } from "@/components/StarRating";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Check, X, Shield, Clock } from "lucide-react";
+import { Check, X, Shield, Clock, LogOut, AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
 
 interface Feedback {
@@ -18,6 +19,7 @@ interface Feedback {
 }
 
 const Admin = () => {
+  const { user, isAdmin, loading: authLoading, signOut } = useAdminAuth();
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "pending" | "approved">("pending");
@@ -46,8 +48,10 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    fetchFeedbacks();
-  }, [filter]);
+    if (isAdmin) {
+      fetchFeedbacks();
+    }
+  }, [filter, isAdmin]);
 
   const handleApprove = async (id: string) => {
     const { error } = await supabase
@@ -78,22 +82,62 @@ const Admin = () => {
 
   const pendingCount = feedbacks.filter((f) => !f.is_approved).length;
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground animate-pulse">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="glass-card border-destructive/20 max-w-md w-full">
+          <CardContent className="py-12 text-center">
+            <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
+              <AlertTriangle className="w-8 h-8 text-destructive" />
+            </div>
+            <h2 className="font-serif text-xl font-semibold mb-2">Access Denied</h2>
+            <p className="text-muted-foreground mb-6">
+              You don't have admin privileges. Contact the administrator to request access.
+            </p>
+            <Button variant="secondary" onClick={signOut}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container max-w-4xl">
         <Card className="glass-card border-primary/20 mb-8">
-          <CardHeader className="flex flex-row items-center gap-4">
-            <div className="p-3 rounded-full bg-primary/10">
-              <Shield className="w-6 h-6 text-primary" />
+          <CardHeader className="flex flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/10">
+                <Shield className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="font-serif text-2xl text-gradient-gold">
+                  Admin Dashboard
+                </CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Signed in as {user.email}
+                </p>
+              </div>
             </div>
-            <div>
-              <CardTitle className="font-serif text-2xl text-gradient-gold">
-                Admin Dashboard
-              </CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">
-                Manage customer feedback submissions
-              </p>
-            </div>
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
           </CardHeader>
         </Card>
 

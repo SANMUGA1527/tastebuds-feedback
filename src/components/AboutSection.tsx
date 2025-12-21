@@ -20,7 +20,7 @@ export const AboutSection = () => {
           </div>
 
           <div className="bg-card border border-border/50 rounded-2xl p-8 space-y-6">
-            <div className="items-center gap-3 mb-6 flex flex-col">
+            <div className="items-center gap-3 mb-6 flex flex-row">
               <div className="p-3 rounded-full bg-primary/10">
                 <Clock className="w-6 h-6 text-primary" />
               </div>
@@ -28,7 +28,7 @@ export const AboutSection = () => {
             </div>
             <div className="space-y-4">
               {hours.map((item, index) => <div key={index} className="flex justify-between items-center py-3 border-b border-border/30 last:border-0">
-                  <span className="text-foreground font-medium">{item.day}</span>
+                  <span className="text-foreground font-medium text-right font-sans text-base mx-[12px]">{item.day}</span>
                   <span className="text-primary font-semibold">{item.time}</span>
                 </div>)}
             </div>

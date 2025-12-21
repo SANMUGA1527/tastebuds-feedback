@@ -1,13 +1,7 @@
 import { Clock } from "lucide-react";
 const hours = [{
-  day: "Sunday - Saturday",
-  time: "5:00 PM - 10:00 PM"
-}, {
-  day: "Friday - Saturday",
-  time: "5:00 PM - 11:00 PM"
-}, {
-  day: "Sunday",
-  time: "4:00 PM - 9:00 PM"
+  day: "All Days",
+  time: "7:00 AM - 10:30 PM"
 }];
 export const AboutSection = () => {
   return <section className="py-20 bg-card/30">
@@ -33,7 +27,12 @@ export const AboutSection = () => {
               <h3 className="font-serif text-xl font-semibold">Opening Hours</h3>
             </div>
             <div className="space-y-4">
-              {hours.map((item, index) => {})}
+              {hours.map((item, index) => (
+                <div key={index} className="flex justify-between items-center py-3 border-b border-border/30 last:border-0">
+                  <span className="text-foreground font-medium">{item.day}</span>
+                  <span className="text-primary font-semibold">{item.time}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

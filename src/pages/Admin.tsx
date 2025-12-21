@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Check, X, Shield, Clock, LogOut, AlertTriangle } from "lucide-react";
+import { Check, X, Shield, Clock, LogOut } from "lucide-react";
 import { format } from "date-fns";
 
 interface Feedback {
@@ -19,7 +19,7 @@ interface Feedback {
 }
 
 const Admin = () => {
-  const { user, isAdmin, loading: authLoading, signOut } = useAdminAuth();
+  const { isAdmin, loading: authLoading, signOut } = useAdminAuth();
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "pending" | "approved">("pending");
@@ -90,30 +90,8 @@ const Admin = () => {
     );
   }
 
-  if (!user) {
-    return null;
-  }
-
   if (!isAdmin) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="glass-card border-destructive/20 max-w-md w-full">
-          <CardContent className="py-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
-              <AlertTriangle className="w-8 h-8 text-destructive" />
-            </div>
-            <h2 className="font-serif text-xl font-semibold mb-2">Access Denied</h2>
-            <p className="text-muted-foreground mb-6">
-              You don't have admin privileges. Contact the administrator to request access.
-            </p>
-            <Button variant="secondary" onClick={signOut}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -129,9 +107,6 @@ const Admin = () => {
                 <CardTitle className="font-serif text-2xl text-gradient-gold">
                   Admin Dashboard
                 </CardTitle>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Signed in as {user.email}
-                </p>
               </div>
             </div>
             <Button variant="ghost" size="sm" onClick={signOut}>

@@ -27,8 +27,8 @@ export const AboutSection = () => {
               <h3 className="font-serif text-xl font-semibold">Opening Hours</h3>
             </div>
             <div className="space-y-4">
-              {hours.map((item, index) => <div key={index} className="flex justify-between items-center py-3 border-b border-border/30 last:border-0">
-                  <span className="text-foreground font-medium text-right font-sans text-base mx-[12px]">{item.day}</span>
+              {hours.map((item, index) => <div key={index} className="justify-between items-center py-3 border-b border-border/30 last:border-0 flex flex-col">
+                  <span className="text-foreground text-right font-sans mx-[12px] text-lg font-normal">{item.day}</span>
                   <span className="text-primary font-semibold">{item.time}</span>
                 </div>)}
             </div>

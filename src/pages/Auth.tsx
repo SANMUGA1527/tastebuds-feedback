@@ -1,93 +1,41 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Shield, User, Lock, ArrowLeft } from "lucide-react";
-import { z } from "zod";
 
-const authSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters").max(50, "Username too long"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+const ADMIN_USERNAME = "hotelsrisenthoor";
+const ADMIN_PASSWORD = "cafe77";
 
 const Auth = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/admin");
-      }
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/admin");
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    const isLoggedIn = localStorage.getItem("admin_authenticated") === "true";
+    if (isLoggedIn) {
+      navigate("/admin");
+    }
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const validation = authSchema.safeParse({ username, password });
-    if (!validation.success) {
-      toast.error(validation.error.errors[0].message);
-      setLoading(false);
-      return;
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      localStorage.setItem("admin_authenticated", "true");
+      toast.success("Welcome, Admin!");
+      navigate("/admin");
+    } else {
+      toast.error("Invalid username or password");
     }
 
-    // Convert username to email format for Supabase auth
-    const email = `${username.toLowerCase()}@hotel.local`;
-
-    try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/admin`,
-          },
-        });
-        if (error) {
-          if (error.message.includes("already registered")) {
-            toast.error("This username is already registered. Please sign in.");
-          } else {
-            toast.error(error.message);
-          }
-        } else {
-          toast.success("Account created! You can now sign in.");
-          setIsSignUp(false);
-        }
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) {
-          if (error.message.includes("Invalid login")) {
-            toast.error("Invalid username or password");
-          } else {
-            toast.error(error.message);
-          }
-        }
-      }
-    } catch (error) {
-      toast.error("An unexpected error occurred");
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   return (
@@ -111,7 +59,7 @@ const Auth = () => {
               Admin Access
             </CardTitle>
             <CardDescription>
-              {isSignUp ? "Create an admin account" : "Sign in to manage feedback"}
+              Sign in to manage feedback
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -151,18 +99,9 @@ const Auth = () => {
                 className="w-full bg-gradient-gold"
                 disabled={loading}
               >
-                {loading ? "Please wait..." : isSignUp ? "Create Account" : "Sign In"}
+                {loading ? "Please wait..." : "Sign In"}
               </Button>
             </form>
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                {isSignUp ? "Already have an account? Sign in" : "Need an account? Sign up"}
-              </button>
-            </div>
           </CardContent>
         </Card>
       </div>

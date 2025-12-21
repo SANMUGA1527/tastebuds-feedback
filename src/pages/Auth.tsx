@@ -6,16 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Shield, Mail, Lock, ArrowLeft } from "lucide-react";
+import { Shield, User, Lock, ArrowLeft } from "lucide-react";
 import { z } from "zod";
 
 const authSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
+  username: z.string().min(3, "Username must be at least 3 characters").max(50, "Username too long"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 const Auth = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,12 +41,15 @@ const Auth = () => {
     e.preventDefault();
     setLoading(true);
 
-    const validation = authSchema.safeParse({ email, password });
+    const validation = authSchema.safeParse({ username, password });
     if (!validation.success) {
       toast.error(validation.error.errors[0].message);
       setLoading(false);
       return;
     }
+
+    // Convert username to email format for Supabase auth
+    const email = `${username.toLowerCase()}@hotel.local`;
 
     try {
       if (isSignUp) {
@@ -59,7 +62,7 @@ const Auth = () => {
         });
         if (error) {
           if (error.message.includes("already registered")) {
-            toast.error("This email is already registered. Please sign in.");
+            toast.error("This username is already registered. Please sign in.");
           } else {
             toast.error(error.message);
           }
@@ -74,7 +77,7 @@ const Auth = () => {
         });
         if (error) {
           if (error.message.includes("Invalid login")) {
-            toast.error("Invalid email or password");
+            toast.error("Invalid username or password");
           } else {
             toast.error(error.message);
           }
@@ -114,15 +117,15 @@ const Auth = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="username">Username</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="admin@restaurant.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="username"
+                    type="text"
+                    placeholder="Enter username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="pl-10"
                     required
                   />

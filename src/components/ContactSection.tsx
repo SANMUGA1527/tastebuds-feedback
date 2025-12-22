@@ -1,9 +1,6 @@
-import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
-import { Instagram } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 
 export const ContactSection = () => {
-  const whatsappNumber = "917010695808";
-  const instagramHandle = "hotelsrisenthoor";
   return <section className="py-20">
       <div className="container">
         <div className="text-center mb-12">
@@ -58,27 +55,6 @@ Nagampatti,<br />
           </div>
         </div>
 
-        {/* Social Contact Buttons */}
-        <div className="flex justify-center gap-4 mt-8">
-          <a
-            href={`https://wa.me/${whatsappNumber}?text=Hello! I'd like to make an enquiry.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-medium transition-all hover:scale-105 shadow-lg"
-          >
-            <MessageCircle className="w-5 h-5" />
-            WhatsApp Us
-          </a>
-          <a
-            href={`https://instagram.com/${instagramHandle}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600 text-white px-6 py-3 rounded-full font-medium transition-all hover:scale-105 shadow-lg"
-          >
-            <Instagram className="w-5 h-5" />
-            Follow Us
-          </a>
-        </div>
 
         {/* Google Maps Embed */}
         <div className="mt-12 rounded-2xl overflow-hidden border border-border/50 h-80">

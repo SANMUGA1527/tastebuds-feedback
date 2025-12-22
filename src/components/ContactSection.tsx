@@ -84,7 +84,7 @@ Nagampatti,<br />
         <div className="mt-12 rounded-2xl overflow-hidden border border-border/50 h-80">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.5!2d78.3964496!3d12.3972076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bac4f002960ced7%3A0xb9ff394d89af9992!2sHotel%20Sri%20Senthoor%20and%20Cafe%2077!5e0!3m2!1sen!2sin!4v1703000000000!5m2!1sen!2sin" width="100%" height="100%" style={{
           border: 0
-        }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Restaurant Location" className="grayscale hover:grayscale-0 transition-all duration-500" />
+        }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Restaurant Location" />
         </div>
       </div>
     </section>;

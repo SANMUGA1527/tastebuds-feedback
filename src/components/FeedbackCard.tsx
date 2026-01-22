@@ -13,7 +13,6 @@ export const FeedbackCard = ({
   message,
   className
 }: FeedbackCardProps) => {
-  const percentage = Math.round((rating / 5) * 100);
   
   return <Card className={`glass-card overflow-hidden group hover:border-primary/30 transition-all duration-300 ${className}`}>
       <CardContent className="p-6 relative">
@@ -22,7 +21,7 @@ export const FeedbackCard = ({
           <p className="font-serif font-extrabold text-2xl text-primary text-left">{name}</p>
           <div className="flex items-center gap-2">
             <StarRating rating={rating} readonly size="sm" />
-            <span className="text-primary font-semibold text-sm">{percentage}%</span>
+            <span className="text-primary font-semibold text-sm">{rating.toFixed(1)}</span>
           </div>
           <p className="text-foreground/90 leading-relaxed italic pt-2">
             "{message}"

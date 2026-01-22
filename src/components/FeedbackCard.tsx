@@ -1,22 +1,19 @@
 import { StarRating } from "./StarRating";
 import { Card, CardContent } from "@/components/ui/card";
 import { Quote } from "lucide-react";
-
 interface FeedbackCardProps {
   name: string;
   rating: number;
   message: string;
   className?: string;
 }
-
 export const FeedbackCard = ({
   name,
   rating,
   message,
-  className,
+  className
 }: FeedbackCardProps) => {
-  return (
-    <Card className={`glass-card overflow-hidden group hover:border-primary/30 transition-all duration-300 ${className}`}>
+  return <Card className={`glass-card overflow-hidden group hover:border-primary/30 transition-all duration-300 ${className}`}>
       <CardContent className="p-6 relative">
         <Quote className="absolute top-4 right-4 w-8 h-8 text-primary/20 group-hover:text-primary/40 transition-colors" />
         <div className="space-y-4">
@@ -25,10 +22,9 @@ export const FeedbackCard = ({
             "{message}"
           </p>
           <div className="pt-2 border-t border-border/50">
-            <p className="font-serif text-primary font-medium">{name}</p>
+            <p className="font-serif bg-primary-foreground font-extrabold text-3xl text-secondary-foreground text-left">{name}</p>
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -9,8 +9,8 @@ export const useAdminAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAdminRole = async (userId: string) => {
+  const checkAdminRole = useCallback(async (userId: string): Promise<boolean> => {
+    try {
       const { data: roleData, error } = await supabase
         .from("user_roles")
         .select("role")
@@ -24,65 +24,84 @@ export const useAdminAuth = () => {
       }
 
       return !!roleData;
-    };
+    } catch {
+      return false;
+    }
+  }, []);
 
-    // Set up auth state listener first
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      
-      if (event === "SIGNED_OUT") {
-        setIsAdmin(false);
-        setLoading(false);
-        navigate("/auth");
-        return;
-      }
+  useEffect(() => {
+    let isMounted = true;
 
-      if (session?.user) {
-        // Defer the role check to avoid deadlock
-        setTimeout(async () => {
+    const initAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!isMounted) return;
+
+        if (session?.user) {
+          setUser(session.user);
           const hasAdminRole = await checkAdminRole(session.user.id);
+          
+          if (!isMounted) return;
+          
           setIsAdmin(hasAdminRole);
           setLoading(false);
           
           if (!hasAdminRole) {
             navigate("/auth");
           }
-        }, 0);
-      } else {
-        setIsAdmin(false);
-        setLoading(false);
-      }
-    });
-
-    // Then check for existing session
-    const initAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        setUser(session.user);
-        const hasAdminRole = await checkAdminRole(session.user.id);
-        setIsAdmin(hasAdminRole);
-        setLoading(false);
-        
-        if (!hasAdminRole) {
+        } else {
+          setIsAdmin(false);
+          setLoading(false);
           navigate("/auth");
         }
-      } else {
-        setIsAdmin(false);
-        setLoading(false);
-        navigate("/auth");
+      } catch (error) {
+        if (isMounted) {
+          setLoading(false);
+          navigate("/auth");
+        }
       }
     };
 
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!isMounted) return;
+
+      if (event === "SIGNED_OUT") {
+        setUser(null);
+        setIsAdmin(false);
+        setLoading(false);
+        navigate("/auth");
+        return;
+      }
+
+      if (event === "SIGNED_IN" && session?.user) {
+        setUser(session.user);
+        // Use setTimeout to defer and avoid deadlock
+        setTimeout(async () => {
+          if (!isMounted) return;
+          const hasAdminRole = await checkAdminRole(session.user.id);
+          if (!isMounted) return;
+          setIsAdmin(hasAdminRole);
+          setLoading(false);
+          if (!hasAdminRole) {
+            navigate("/auth");
+          }
+        }, 0);
+      }
+    });
+
     initAuth();
 
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, [navigate, checkAdminRole]);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     await supabase.auth.signOut();
-    navigate("/auth");
-  };
+  }, []);
 
   return { isAdmin, loading, signOut, user };
 };
